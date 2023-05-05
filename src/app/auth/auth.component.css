@@ -1,0 +1,12 @@
+button:hover {
+  opacity: 0.2;
+}
+.gradient-custom {
+  background: linear-gradient(to right, darkturquoise, blue)
+}
+@media screen and (max-width: 300px) {
+  span.psw {
+    display: block;
+    float: none;
+  }
+}
