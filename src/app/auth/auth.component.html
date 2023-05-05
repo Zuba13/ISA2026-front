@@ -1,0 +1,62 @@
+<section class="min-vh-100 gradient-custom">
+  <div class="container py-5 h-100">
+    <div class="row d-flex justify-content-center align-items-center h-100">
+      <div class="col-12 col-md-8 col-lg-6 col-xl-5">
+        <div class="card bg-dark text-white" style="border-radius: 1rem;">
+          <div class="card-body p-5 text-center">
+
+            <form [formGroup]="form" (submit)="submit()">
+              <div class="mb-md-5 mt-md-4 pb-5">
+
+                <h2 class="fw-bold mb-2 text-uppercase">{{ isLoginPage ? 'LoGiN' : 'ReGiStEr' }}</h2>
+                <p class="text-white-50 mb-5">{{ isLoginPage ? 'Enter username and password' : 'Please fill the form below' }}</p>
+
+                <div class="form-outline form-white mb-4">
+                  <input formControlName="name" type="{{isLoginPage ? 'hidden' : 'text'}}" placeholder="First Name" name="first-name" id="first-name" class="form-control form-control-lg">
+                  <label [hidden]="isLoginPage" class="form-label" for="first-name">First Name</label>
+                </div>
+
+                <div class="form-outline form-white mb-4">
+                  <input formControlName="surname" type="{{isLoginPage ? 'hidden' : 'text'}}" placeholder="Last Name" name="last-name" id="last-name" class="form-control form-control-lg">
+                  <label [hidden]="isLoginPage" class="form-label" for="last-name">Last Name</label>
+                </div>
+
+                <div class="form-outline form-white mb-4">
+                  <input formControlName="email" type="{{isLoginPage ? 'hidden' : 'email'}}" placeholder="Email" name="email" id="email" class="form-control form-control-lg">
+                  <label [hidden]="isLoginPage" class="form-label" for="email">Email</label>
+                </div>
+
+                <div class="form-outline form-white mb-4">
+                  <input formControlName="gender" type="{{isLoginPage ? 'hidden' : 'text'}}" placeholder="Gender" name="gender" id="gender" class="form-control form-control-lg">
+                  <label [hidden]="isLoginPage" class="form-label" for="gender">Gender</label>
+                </div>
+
+                <div class="form-outline form-white mb-4">
+                  <input type="text" id="username" formControlName="username" placeholder="Enter Username" name="username" class="form-control form-control-lg" required>
+                  <label class="form-label" for="username">Username</label>
+                </div>
+
+                <div class="form-outline form-white mb-4">
+                  <input formControlName="password" type="password" placeholder="Enter Password" name="password" id="password" class="form-control form-control-lg" required>
+                  <label class="form-label" for="password">Password</label>
+                </div>
+
+                <p><a class="text-white-50" href="#!">Forgot password?</a></p>
+
+                <button class="btn btn-outline-light btn-lg px-5" type="submit">
+                  <span>{{isLoginPage ? 'Login' : 'Register'}}</span>
+                </button>
+
+              </div>
+            </form>
+
+            <div>
+              <p class="mb-0">{{isLoginPage ? 'Still do not have an account?' : 'Already have an account?' }} <a class="text-white-50" (click)="isLoginPage = !isLoginPage">{{isLoginPage ? 'Sign Up' : 'Login' }}</a></p>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
