@@ -2,7 +2,7 @@ button:hover {
   opacity: 0.2;
 }
 .gradient-custom {
-  background: linear-gradient(to right, darkturquoise, blue)
+  background: linear-gradient(to bottom, red, blue, white)
 }
 @media screen and (max-width: 300px) {
   span.psw {

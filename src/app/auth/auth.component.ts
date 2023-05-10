@@ -1,6 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup} from "@angular/forms";
 import {HttpClient} from "@angular/common/http";
+import {ActivatedRoute} from "@angular/router";
 
 @Component({
   selector: 'app-auth',
@@ -12,7 +13,8 @@ export class AuthComponent implements OnInit{
   isLoginPage = true;
   constructor(
     private formBuilder: FormBuilder,
-    private http: HttpClient
+    private http: HttpClient,
+    private route: ActivatedRoute
   ) {
   }
   ngOnInit() {
@@ -24,8 +26,10 @@ export class AuthComponent implements OnInit{
       name: '',
       surname: ''
     })
+    this.route.url.subscribe(params => {
+      this.isLoginPage = params[0].path === 'login';
+    })
   }
-
   submit(){
     if(this.isLoginPage) {
       this.http.post('http://localhost:8080/api/auth/login', this.form.getRawValue())
