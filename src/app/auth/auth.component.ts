@@ -27,7 +27,7 @@ export class AuthComponent implements OnInit{
       surname: ''
     })
     this.route.url.subscribe(params => {
-      (params[0].path === 'login') ? this.isLoginPage = true : this.isLoginPage = false
+      this.isLoginPage = params[0].path === 'login';
     })
   }
   submit(){

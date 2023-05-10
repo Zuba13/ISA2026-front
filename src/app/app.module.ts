@@ -13,7 +13,6 @@ import { ManagersComponent } from './managers/managers.component';
 
 const appRoutes: Routes = [
   {path: '', component: HomeComponent},
-  {path: 'auth', component: AuthComponent},
   {path: 'managers', component: ManagersComponent},
   {path: 'login', component: AuthComponent},
   {path: 'register', component: AuthComponent}
