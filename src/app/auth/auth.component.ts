@@ -1,19 +1,20 @@
 import {Component, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup} from "@angular/forms";
-import {HttpClient} from "@angular/common/http";
 import {ActivatedRoute} from "@angular/router";
+import {AuthService} from "../shared/auth.service";
 
 @Component({
   selector: 'app-auth',
   templateUrl: './auth.component.html',
-  styleUrls: ['./auth.component.css']
+  styleUrls: ['./auth.component.css'],
+  providers: [AuthService]
 })
 export class AuthComponent implements OnInit{
   form!: FormGroup;
   isLoginPage = true;
   constructor(
+    private authService: AuthService,
     private formBuilder: FormBuilder,
-    private http: HttpClient,
     private route: ActivatedRoute
   ) {
   }
@@ -29,20 +30,15 @@ export class AuthComponent implements OnInit{
     this.route.url.subscribe(params => {
       this.isLoginPage = params[0].path === 'login';
     })
+
   }
   submit(){
     if(this.isLoginPage) {
-      this.http.post('http://localhost:8080/api/auth/login', this.form.getRawValue())
-        .subscribe((res:any) => {
-          console.log(res);
-        })
+      this.authService.login(this.form.getRawValue())
     }
     else
     {
-      this.http.post('http://localhost:8080/api/auth/register', this.form.getRawValue())
-        .subscribe((res:any) => {
-          console.log(res);
-        })
+      this.authService.register(this.form.getRawValue())
     }
   }
 }
