@@ -35,6 +35,12 @@ export class AuthComponent implements OnInit{
 
   }
   submit(){
-    this.authService.submitPostRequest(this.isLoginPage, this.form.getRawValue(), this.http)
+    if(this.isLoginPage) {
+      this.authService.login(this.form.getRawValue(), this.http)
+    }
+    else
+    {
+      this.authService.register(this.form.getRawValue(), this.http)
+    }
   }
 }

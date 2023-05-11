@@ -52,7 +52,7 @@
             </form>
 
             <div>
-              <p class="mb-0">{{isLoginPage ? 'Still do not have an account?' : 'Already have an account?' }} <a class="text-white-50" href="{{ isLoginPage ? '/register' : '/login' }}">{{isLoginPage ? 'Sign Up' : 'Login' }}</a></p>
+              <p class="mb-0">{{isLoginPage ? 'Still do not have an account?' : 'Already have an account?' }} <a class="text-white-50" routerLink="{{ isLoginPage ? '/register' : '/login' }}">{{isLoginPage ? 'Sign Up' : 'Login' }}</a></p>
             </div>
 
           </div>
