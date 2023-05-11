@@ -1,6 +1,5 @@
 import {Component, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup} from "@angular/forms";
-import {HttpClient} from "@angular/common/http";
 import {ActivatedRoute} from "@angular/router";
 import {AuthService} from "../shared/auth.service";
 
@@ -16,7 +15,6 @@ export class AuthComponent implements OnInit{
   constructor(
     private authService: AuthService,
     private formBuilder: FormBuilder,
-    private http: HttpClient,
     private route: ActivatedRoute
   ) {
   }
@@ -36,11 +34,11 @@ export class AuthComponent implements OnInit{
   }
   submit(){
     if(this.isLoginPage) {
-      this.authService.login(this.form.getRawValue(), this.http)
+      this.authService.login(this.form.getRawValue())
     }
     else
     {
-      this.authService.register(this.form.getRawValue(), this.http)
+      this.authService.register(this.form.getRawValue())
     }
   }
 }
