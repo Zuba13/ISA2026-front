@@ -1,0 +1,10 @@
+.footer-custom{
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  padding: 20px;
+  background-color: whitesmoke;
+  text-align: center;
+  color: black;
+  margin-bottom: 0;
+}
