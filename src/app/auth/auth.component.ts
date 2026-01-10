@@ -1,7 +1,7 @@
-import {Component, OnInit} from '@angular/core';
-import {FormBuilder, FormGroup} from "@angular/forms";
-import {ActivatedRoute} from "@angular/router";
-import {AuthService} from "../shared/auth.service";
+import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup } from "@angular/forms";
+import { ActivatedRoute, Router } from "@angular/router";
+import { AuthService } from "../shared/auth.service";
 
 @Component({
   selector: 'app-auth',
@@ -9,13 +9,14 @@ import {AuthService} from "../shared/auth.service";
   styleUrls: ['./auth.component.css'],
   providers: [AuthService]
 })
-export class AuthComponent implements OnInit{
+export class AuthComponent implements OnInit {
   form!: FormGroup;
   isLoginPage = true;
   constructor(
     private authService: AuthService,
     private formBuilder: FormBuilder,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private router: Router
   ) {
   }
   ngOnInit() {
@@ -23,7 +24,7 @@ export class AuthComponent implements OnInit{
       username: '',
       password: '',
       email: '',
-      gender: '',
+      address: '',
       name: '',
       surname: ''
     })
@@ -32,13 +33,33 @@ export class AuthComponent implements OnInit{
     })
 
   }
-  submit(){
-    if(this.isLoginPage) {
-      this.authService.login(this.form.getRawValue())
+  submit() {
+    const rawValue = this.form.getRawValue();
+    if (this.isLoginPage) {
+      this.authService.login({
+        email: rawValue.email,
+        password: rawValue.password
+      }).subscribe({
+        next: () => {
+          this.router.navigate(['/']);
+        },
+        error: (err) => {
+          console.error(err);
+          alert('Login failed. Please check your credentials.');
+        }
+      });
     }
-    else
-    {
-      this.authService.register(this.form.getRawValue())
+    else {
+      this.authService.register(rawValue).subscribe({
+        next: () => {
+          alert('Registration successful! Please login.');
+          this.router.navigate(['/login']);
+        },
+        error: (err) => {
+          console.error(err);
+          alert('Registration failed. Username or Email might be taken.');
+        }
+      });
     }
   }
 }

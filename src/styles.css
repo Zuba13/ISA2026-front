@@ -1,1 +1,77 @@
-/* You can add global styles to this file, and also import other style files */
+/* Aurora Glass Design System */
+:root {
+  /* Dynamic Color Palette */
+  --bg-dark: #070b14;
+  --bg-panel: rgba(255, 255, 255, 0.03);
+  --glass-border: rgba(255, 255, 255, 0.08);
+  --primary-glow: #00f2ff;
+  --secondary-glow: #bd00ff;
+  --text-main: #ffffff;
+  --text-muted: rgba(255, 255, 255, 0.6);
+  --input-bg: rgba(255, 255, 255, 0.05);
+
+  /* Fonts */
+  --font-main: 'Outfit', sans-serif;
+  
+  /* Transitions */
+  --ease-spring: cubic-bezier(0.43, 0.13, 0.23, 0.96);
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--font-main);
+  background-color: var(--bg-dark);
+  color: var(--text-main);
+  line-height: 1.6;
+  min-height: 100vh;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Global Reset for App Structure */
+app-root {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+/* Typography Utility */
+h1, h2, h3, h4, h5, h6 {
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+a {
+  text-decoration: none;
+  color: var(--primary-glow);
+  transition: color 0.3s ease;
+}
+
+a:hover {
+  color: var(--secondary-glow);
+}
+
+/* Animated Background Mesh */
+.aurora-bg {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: -1;
+  background: 
+    radial-gradient(circle at 10% 20%, rgba(93, 31, 237, 0.15) 0%, transparent 40%),
+    radial-gradient(circle at 90% 80%, rgba(0, 242, 255, 0.15) 0%, transparent 40%);
+  filter: blur(80px);
+  animation: bgPulse 10s ease-in-out infinite alternate;
+}
+
+@keyframes bgPulse {
+  0% { transform: scale(1); opacity: 0.8; }
+  100% { transform: scale(1.1); opacity: 0.5; }
+}
