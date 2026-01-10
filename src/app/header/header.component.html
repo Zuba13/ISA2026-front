@@ -1,11 +1,36 @@
-<div class="text-uppercase row justify-content-between position-center bg-danger  p-3">
-  <div class="col-4">
-    <a routerLink="/"><h4>Home</h4></a>
+<header class="main-header">
+  <div class="header-left">
+    <!-- <button class="icon-btn menu-btn">
+      <i class="bi bi-list"></i>
+    </button> -->
+    <a routerLink="/" class="logo">
+      <i class="bi bi-play-btn-fill logo-icon"></i>
+      <span class="logo-text">Jutjubić</span>
+    </a>
   </div>
-  <div class="col-4 text-center">
-    <a routerLink="/managers"><h5>Managers</h5></a>
+
+  <div class="header-center">
+    <div class="search-bar">
+      <input type="text" placeholder="Search">
+      <button class="search-btn">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+    <!-- <button class="icon-btn mic-btn">
+      <i class="bi bi-mic-fill"></i>
+    </button> -->
   </div>
-  <div class="col-4 text-end">
-    <a routerLink="/login"><h4>Login</h4></a>
+
+  <div class="header-right">
+    <!-- <button class="icon-btn" title="Create">
+      <i class="bi bi-camera-video"></i>
+    </button>
+    <button class="icon-btn" title="Notifications">
+      <i class="bi bi-bell"></i>
+    </button> -->
+    <a routerLink="/login" class="profile-icon" style="text-decoration: none; color: white;">
+      <!-- Placeholder for user initials or avatar -->
+      <span>User</span>
+    </a>
   </div>
-</div>
+</header>
