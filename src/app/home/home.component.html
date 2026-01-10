@@ -1,3 +1,25 @@
-<app-header></app-header>
-<p>home works!</p>
-<app-footer></app-footer>
+<div class="main-container">
+    <div class="video-grid" *ngIf="videos.length > 0; else noVideos">
+        <div class="video-card" *ngFor="let video of videos">
+            <div class="thumbnail-wrapper">
+                <img [src]="video.thumbnail || 'https://via.placeholder.com/320x180'" alt="Thumbnail" class="thumbnail">
+                <span class="duration">12:34</span>
+            </div>
+            <div class="video-details">
+                <div class="avatar">U</div>
+                <div class="meta">
+                    <h3 class="video-title">{{ video.title || 'Untitled Video' }}</h3>
+                    <p class="channel-name">{{ video.description || 'Description' }}</p>
+                    <p class="views-date">10K views • 2 hours ago</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <ng-template #noVideos>
+        <div class="empty-state">
+            <h2>No videos found</h2>
+            <p>Upload a video to get started!</p>
+        </div>
+    </ng-template>
+</div>
