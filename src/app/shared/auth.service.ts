@@ -1,21 +1,31 @@
-import {HttpClient} from "@angular/common/http";
-import {Injectable} from "@angular/core";
+import { HttpClient } from "@angular/common/http";
+import { Injectable } from "@angular/core";
+import { tap } from "rxjs/operators";
 
 @Injectable()
-export class AuthService{
+export class AuthService {
+  private apiUrl = 'http://localhost/api';
+
   constructor(private http: HttpClient) {
   }
 
-  login(values: string) {
-    this.http.post('http://localhost:8080/api/auth/login', values)
-      .subscribe((res: any) => {
-        console.log(res);
-      })
-  }
-  register(values: string) {
-      this.http.post('http://localhost:8080/api/auth/register', values)
-        .subscribe((res:any) => {
-          console.log(res);
+  login(values: any) {
+    return this.http.post(`${this.apiUrl}/login`, values)
+      .pipe(
+        tap((res: any) => {
+          if (res && res.access_token) {
+            localStorage.setItem('access_token', res.access_token);
+          }
         })
+      );
+  }
+
+  register(values: any) {
+    // Backend requires password confirmation
+    const payload = {
+      ...values,
+      password_confirmation: values.password
+    };
+    return this.http.post(`${this.apiUrl}/register`, payload);
   }
 }
