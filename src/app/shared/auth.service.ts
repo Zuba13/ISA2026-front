@@ -32,4 +32,8 @@ export class AuthService {
     };
     return this.http.post(`${this.apiUrl}/register`, payload);
   }
+
+  getUser(id: any) {
+    return this.http.get(`${this.apiUrl}/users/${id}`);
+  }
 }

@@ -1,0 +1,27 @@
+<div class="aurora-bg"></div>
+<section class="profile-section">
+    <div class="profile-container">
+        <div class="glass-card" *ngIf="user">
+            <div class="card-header">
+                <h2 class="profile-title">{{ user.username }}'s Profile</h2>
+            </div>
+
+            <div class="profile-content">
+                <div class="info-group">
+                    <label class="info-label">Name</label>
+                    <div class="info-value">{{ user.name }} {{ user.surname }}</div>
+                </div>
+
+                <div class="info-group">
+                    <label class="info-label">Address</label>
+                    <div class="info-value">{{ user.address || 'N/A' }}</div>
+                </div>
+            </div>
+        </div>
+        <div class="glass-card" *ngIf="!user">
+            <div class="card-header">
+                <h2 class="profile-title">User not found</h2>
+            </div>
+        </div>
+    </div>
+</section>

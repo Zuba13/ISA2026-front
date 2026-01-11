@@ -10,41 +10,56 @@
         <form [formGroup]="form" (submit)="submit()" class="auth-form">
           <!-- Registration Fields -->
           <div class="input-group" *ngIf="!isLoginPage">
-            <!-- Using *ngIf for cleaner DOM or [hidden] is fine, sticking to hidden logic for minimal logic change -->
-            <input formControlName="name" type="text" placeholder=" " id="first-name" [hidden]="isLoginPage">
-            <label for="first-name" [hidden]="isLoginPage">First Name</label>
+            <input formControlName="name" type="text" placeholder=" " id="first-name">
+            <label for="first-name">First Name</label>
+            <div *ngIf="submitted && form.get('name')?.errors?.['required']" class="error-text">First Name is required
+            </div>
           </div>
 
           <div class="input-group" *ngIf="!isLoginPage">
-            <input formControlName="surname" type="text" placeholder=" " id="last-name" [hidden]="isLoginPage">
-            <label for="last-name" [hidden]="isLoginPage">Last Name</label>
+            <input formControlName="surname" type="text" placeholder=" " id="last-name">
+            <label for="last-name">Last Name</label>
+            <div *ngIf="submitted && form.get('surname')?.errors?.['required']" class="error-text">Last Name is required
+            </div>
           </div>
 
           <div class="input-group" *ngIf="!isLoginPage">
-            <input formControlName="address" type="text" placeholder=" " id="address" [hidden]="isLoginPage">
-            <label for="address" [hidden]="isLoginPage">Address</label>
+            <input formControlName="address" type="text" placeholder=" " id="address">
+            <label for="address">Address</label>
+            <div *ngIf="submitted && form.get('address')?.errors?.['required']" class="error-text">Address is required
+            </div>
           </div>
 
           <div class="input-group" *ngIf="!isLoginPage">
-            <input formControlName="username" type="text" placeholder=" " id="username" [hidden]="isLoginPage">
-            <label for="username" [hidden]="isLoginPage">Username</label>
+            <input formControlName="username" type="text" placeholder=" " id="username">
+            <label for="username">Username</label>
+            <div *ngIf="submitted && form.get('username')?.errors?.['required']" class="error-text">Username is required
+            </div>
           </div>
 
           <!-- Common Fields -->
           <div class="input-group">
             <input formControlName="email" type="email" placeholder=" " id="email">
             <label for="email">Email</label>
+            <div *ngIf="submitted && form.get('email')?.errors?.['required']" class="error-text">Email is required</div>
+            <div *ngIf="submitted && form.get('email')?.errors?.['email']" class="error-text">Invalid email format</div>
           </div>
 
           <div class="input-group">
             <input formControlName="password" type="password" placeholder=" " id="password">
             <label for="password">Password</label>
+            <div *ngIf="submitted && form.get('password')?.errors?.['required']" class="error-text">Password is required
+            </div>
+            <div *ngIf="submitted && form.get('password')?.errors?.['minlength']" class="error-text">Password must be at
+              least 8 characters</div>
           </div>
 
           <div class="input-group" *ngIf="!isLoginPage">
-            <input formControlName="password_confirmation" type="password" placeholder=" " id="password_confirm"
-              [hidden]="isLoginPage">
-            <label for="password_confirm" [hidden]="isLoginPage">Confirm Password</label>
+            <input formControlName="password_confirmation" type="password" placeholder=" " id="password_confirm">
+            <label for="password_confirm">Confirm Password</label>
+            <div *ngIf="submitted && form.get('password_confirmation')?.errors?.['required']" class="error-text">Please
+              confirm your password</div>
+            <div *ngIf="submitted && form.errors?.['passwordMismatch']" class="error-text">Passwords do not match</div>
           </div>
 
           <div class="form-actions">

@@ -11,13 +11,15 @@ import { FooterComponent } from './footer/footer.component';
 import { HomeComponent } from './home/home.component';
 import { ManagersComponent } from './managers/managers.component';
 import { ProfileComponent } from './profile/profile.component';
+import { PublicProfileComponent } from './public-profile/public-profile.component';
 
 const appRoutes: Routes = [
   { path: '', component: HomeComponent },
   { path: 'managers', component: ManagersComponent },
   { path: 'login', component: AuthComponent },
   { path: 'register', component: AuthComponent },
-  { path: 'profile', component: ProfileComponent }
+  { path: 'profile', component: ProfileComponent },
+  { path: 'user-profile/:id', component: PublicProfileComponent }
 ];
 @NgModule({
   declarations: [
@@ -27,7 +29,8 @@ const appRoutes: Routes = [
     FooterComponent,
     HomeComponent,
     ManagersComponent,
-    ProfileComponent
+    ProfileComponent,
+    PublicProfileComponent
   ],
   imports: [
     BrowserModule,

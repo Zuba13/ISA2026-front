@@ -14,23 +14,6 @@
 .video-card {
     cursor: pointer;
     transition: transform 0.2s;
-    border: 2px solid red;
-    /* Requirement: Red border */
-    position: relative;
-    /* For dot positioning */
-}
-
-/* Requirement: Dot in the corner */
-.video-card::after {
-    content: '';
-    position: absolute;
-    top: -5px;
-    right: -5px;
-    width: 10px;
-    height: 10px;
-    background-color: red;
-    border-radius: 50%;
-    box-shadow: 0 0 5px rgba(255, 0, 0, 0.5);
 }
 
 .video-card:hover {
@@ -97,7 +80,167 @@
     overflow: hidden;
 }
 
+.avatar,
 .channel-name,
+.comment-avatar,
+.comment-user {
+    cursor: pointer;
+}
+
+.avatar:hover,
+.comment-avatar:hover {
+    opacity: 0.8;
+}
+
+.channel-name:hover,
+.comment-user:hover {
+    color: var(--primary-glow);
+}
+
+.interactions {
+    display: flex;
+    gap: 15px;
+    margin-top: 15px;
+    padding-top: 12px;
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.action-btn {
+    background: transparent;
+    border: none;
+    color: var(--text-muted);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    padding: 6px 10px;
+    border-radius: 18px;
+    transition: all 0.2s;
+}
+
+.action-btn:hover {
+    background: rgba(255, 255, 255, 0.05);
+    color: #fff;
+}
+
+.action-btn.active {
+    color: var(--primary-glow);
+}
+
+.action-btn i {
+    font-size: 1.1rem;
+}
+
+.comments-section {
+    margin-top: 15px;
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 12px;
+    padding: 12px;
+    animation: slideDown 0.3s ease-out;
+}
+
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.comment-input-area {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 15px;
+}
+
+.comment-input-area input {
+    flex: 1;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 20px;
+    padding: 8px 15px;
+    color: #fff;
+    outline: none;
+}
+
+.comment-input-area input:focus {
+    border-color: var(--primary-glow);
+}
+
+.send-btn {
+    background: var(--primary-glow);
+    border: none;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    color: #000;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.2s;
+}
+
+.send-btn:hover {
+    transform: scale(1.1);
+}
+
+.comments-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    max-height: 300px;
+    overflow-y: auto;
+}
+
+.comment-item {
+    display: flex;
+    gap: 10px;
+}
+
+.comment-avatar {
+    width: 32px;
+    height: 32px;
+    background: var(--primary-glow);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.8rem;
+    font-weight: bold;
+    color: #000;
+    flex-shrink: 0;
+}
+
+.comment-content {
+    flex: 1;
+}
+
+.comment-user {
+    font-size: 0.85rem;
+    font-weight: 600;
+    margin: 0;
+    color: #fff;
+}
+
+.comment-user span {
+    font-weight: 400;
+    color: var(--text-muted);
+    font-size: 0.75rem;
+    margin-left: 8px;
+}
+
+.comment-text {
+    font-size: 0.9rem;
+    margin: 4px 0 0;
+    color: rgba(255, 255, 255, 0.8);
+}
+
 .views-date {
     color: var(--text-muted);
     font-size: 0.85rem;

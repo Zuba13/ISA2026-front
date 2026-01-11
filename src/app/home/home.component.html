@@ -6,11 +6,51 @@
                 <span class="duration">12:34</span>
             </div>
             <div class="video-details">
-                <div class="avatar">U</div>
+                <div class="avatar" (click)="navigateToProfile(video.user.id)">
+                    {{ video.user.name.charAt(0) }}
+                </div>
                 <div class="meta">
                     <h3 class="video-title">{{ video.title || 'Untitled Video' }}</h3>
-                    <p class="channel-name">{{ video.description || 'Description' }}</p>
-                    <p class="views-date">10K views • 2 hours ago</p>
+                    <p class="channel-name" (click)="navigateToProfile(video.user.id)">{{ video.user.username }}</p>
+                    <p class="views-date">{{ getViewsCount(video.views) }} views • {{ getTimeAgo(video.created_at) }}
+                    </p>
+                </div>
+            </div>
+
+            <!-- Interactions -->
+            <div class="interactions">
+                <button class="action-btn" (click)="toggleLike(video)" [class.active]="isLikedByMe(video)">
+                    <i class="bi" [class.bi-hand-thumbs-up-fill]="isLikedByMe(video)"
+                        [class.bi-hand-thumbs-up]="!isLikedByMe(video)"></i>
+                    <span>{{ video.likes?.length || 0 }}</span>
+                </button>
+                <button class="action-btn" (click)="toggleComments(video.id)">
+                    <i class="bi bi-chat-text"></i>
+                    <span>{{ video.comments_count || 0 }}</span>
+                </button>
+            </div>
+
+            <!-- Comments Section -->
+            <div class="comments-section" *ngIf="visibleComments[video.id]">
+                <div class="comment-input-area">
+                    <input type="text" [(ngModel)]="newComments[video.id]" placeholder="Add a comment..."
+                        (keyup.enter)="addComment(video)">
+                    <button class="send-btn" (click)="addComment(video)">
+                        <i class="bi bi-send"></i>
+                    </button>
+                </div>
+                <div class="comments-list">
+                    <div class="comment-item" *ngFor="let comment of video.comments">
+                        <div class="comment-avatar" (click)="navigateToProfile(comment.user.id)">
+                            {{ comment.user.name.charAt(0) }}
+                        </div>
+                        <div class="comment-content">
+                            <p class="comment-user" (click)="navigateToProfile(comment.user.id)">{{
+                                comment.user.username
+                                }} <span>{{ getTimeAgo(comment.created_at) }}</span></p>
+                            <p class="comment-text">{{ comment.content }}</p>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

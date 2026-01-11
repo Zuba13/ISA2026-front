@@ -161,3 +161,11 @@
 .link-highlight:hover {
   text-decoration: underline;
 }
+
+.error-text {
+  color: #ff4d4d;
+  font-size: 0.75rem;
+  margin-top: 4px;
+  position: absolute;
+  bottom: -18px;
+}
