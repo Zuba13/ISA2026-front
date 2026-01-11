@@ -15,13 +15,9 @@ export class HomeComponent implements OnInit {
 
   ngOnInit() {
     const token = localStorage.getItem('access_token');
-    if (!token) {
-      this.router.navigate(['/login']);
-      return;
-    }
-
-    this.isAuthenticated = true;
-    this.fetchVideos(token);
+    // Requirement 3.1: Unauthenticated users can view video posts
+    this.isAuthenticated = !!token;
+    this.fetchVideos(token || '');
   }
 
   fetchVideos(token: string) {

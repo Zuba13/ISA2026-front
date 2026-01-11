@@ -14,6 +14,23 @@
 .video-card {
     cursor: pointer;
     transition: transform 0.2s;
+    border: 2px solid red;
+    /* Requirement: Red border */
+    position: relative;
+    /* For dot positioning */
+}
+
+/* Requirement: Dot in the corner */
+.video-card::after {
+    content: '';
+    position: absolute;
+    top: -5px;
+    right: -5px;
+    width: 10px;
+    height: 10px;
+    background-color: red;
+    border-radius: 50%;
+    box-shadow: 0 0 5px rgba(255, 0, 0, 0.5);
 }
 
 .video-card:hover {

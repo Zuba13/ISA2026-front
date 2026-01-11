@@ -15,6 +15,10 @@ export class AuthService {
         tap((res: any) => {
           if (res && res.access_token) {
             localStorage.setItem('access_token', res.access_token);
+            // Store user data if available in response
+            if (res.user) {
+              localStorage.setItem('user', JSON.stringify(res.user));
+            }
           }
         })
       );

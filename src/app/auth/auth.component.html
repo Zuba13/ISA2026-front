@@ -41,6 +41,12 @@
             <label for="password">Password</label>
           </div>
 
+          <div class="input-group" *ngIf="!isLoginPage">
+            <input formControlName="password_confirmation" type="password" placeholder=" " id="password_confirm"
+              [hidden]="isLoginPage">
+            <label for="password_confirm" [hidden]="isLoginPage">Confirm Password</label>
+          </div>
+
           <div class="form-actions">
             <a href="#!" class="forgot-pass">Forgot password?</a>
             <button class="btn-glow" type="submit">

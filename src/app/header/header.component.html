@@ -28,9 +28,36 @@
     <button class="icon-btn" title="Notifications">
       <i class="bi bi-bell"></i>
     </button> -->
-    <a routerLink="/login" class="profile-icon" style="text-decoration: none; color: white;">
-      <!-- Placeholder for user initials or avatar -->
-      <span>User</span>
-    </a>
+
+    <!-- Show dropdown if logged in, otherwise link to login -->
+    <div class="profile-wrapper" *ngIf="isLoggedIn(); else loginLink">
+      <div class="profile-section">
+        <a routerLink="/profile" class="username-link" *ngIf="userName">{{ userName }}</a>
+        <div class="profile-icon" (click)="toggleDropdown()">
+          <i class="bi bi-person-circle"></i>
+        </div>
+      </div>
+
+      <!-- Dropdown Menu -->
+      <div class="dropdown-menu" *ngIf="showDropdown">
+        <a routerLink="/profile" class="dropdown-item">
+          <i class="bi bi-person"></i>
+          <span>Profile</span>
+        </a>
+        <button class="dropdown-item" (click)="logout()">
+          <i class="bi bi-box-arrow-right"></i>
+          <span>Logout</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Login link for non-authenticated users -->
+    <ng-template #loginLink>
+      <a routerLink="/login" class="profile-section" style="text-decoration: none; color: white;">
+        <div class="profile-icon">
+          <i class="bi bi-person-circle"></i>
+        </div>
+      </a>
+    </ng-template>
   </div>
 </header>

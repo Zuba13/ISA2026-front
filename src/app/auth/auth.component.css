@@ -6,6 +6,8 @@
   justify-content: center;
   flex: 1;
   padding: 2rem;
+  padding-top: 5rem;
+  /* Account for fixed header (64px + extra spacing) */
   z-index: 1;
 }
 
@@ -69,6 +71,12 @@
   border-bottom: 1px solid var(--text-muted);
   outline: none;
   transition: all 0.3s ease;
+}
+
+#password,
+#password_confirm {
+  color: darkred;
+  /* Requirement: Dark red password letters (applied to both password fields) */
 }
 
 .input-group label {

@@ -1,0 +1,45 @@
+<div class="aurora-bg"></div>
+<section class="profile-section">
+    <div class="profile-container">
+        <div class="glass-card">
+            <div class="card-header">
+                <h2 class="profile-title">My Profile</h2>
+                <p class="profile-subtitle">View your account information</p>
+            </div>
+
+            <div class="profile-content" *ngIf="currentUser">
+                <div class="info-group">
+                    <label class="info-label">First Name</label>
+                    <div class="info-value">{{ currentUser.name || 'N/A' }}</div>
+                </div>
+
+                <div class="info-group">
+                    <label class="info-label">Last Name</label>
+                    <div class="info-value">{{ currentUser.surname || 'N/A' }}</div>
+                </div>
+
+                <div class="info-group">
+                    <label class="info-label">Username</label>
+                    <div class="info-value">{{ currentUser.username || 'N/A' }}</div>
+                </div>
+
+                <div class="info-group">
+                    <label class="info-label">Email</label>
+                    <div class="info-value">{{ currentUser.email || 'N/A' }}</div>
+                </div>
+
+                <div class="info-group">
+                    <label class="info-label">Address</label>
+                    <div class="info-value">{{ currentUser.address || 'N/A' }}</div>
+                </div>
+
+                <div class="logout-section">
+                    <button class="btn-logout" (click)="logout()">
+                        <i class="bi bi-box-arrow-right"></i>
+                        <span>Logout</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

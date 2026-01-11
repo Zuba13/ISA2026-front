@@ -23,6 +23,7 @@ export class AuthComponent implements OnInit {
     this.form = this.formBuilder.group({
       username: '',
       password: '',
+      password_confirmation: '', // Requirement: Two password fields
       email: '',
       address: '',
       name: '',
