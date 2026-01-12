@@ -35,16 +35,23 @@ export class AuthComponent implements OnInit {
 
     this.route.url.subscribe(params => {
       this.isLoginPage = params[0].path === 'login';
+      this.submitted = false; // Reset submitted state on navigation
+
       if (this.isLoginPage) {
-        // Remove registration validators for login
-        this.form.get('username')?.clearValidators();
-        this.form.get('password_confirmation')?.clearValidators();
-        this.form.get('address')?.clearValidators();
-        this.form.get('name')?.clearValidators();
-        this.form.get('surname')?.clearValidators();
+        this.form.get('username')?.disable();
+        this.form.get('password_confirmation')?.disable();
+        this.form.get('address')?.disable();
+        this.form.get('name')?.disable();
+        this.form.get('surname')?.disable();
+
         this.form.get('password')?.setValidators([Validators.required]);
       } else {
-        // Ensure all are set for registration
+        this.form.get('username')?.enable();
+        this.form.get('password_confirmation')?.enable();
+        this.form.get('address')?.enable();
+        this.form.get('name')?.enable();
+        this.form.get('surname')?.enable();
+
         this.form.get('username')?.setValidators([Validators.required]);
         this.form.get('password')?.setValidators([Validators.required, Validators.minLength(8)]);
         this.form.get('password_confirmation')?.setValidators([Validators.required]);
@@ -52,18 +59,22 @@ export class AuthComponent implements OnInit {
         this.form.get('name')?.setValidators([Validators.required]);
         this.form.get('surname')?.setValidators([Validators.required]);
       }
-      this.form.get('username')?.updateValueAndValidity();
+
+      this.form.get('email')?.updateValueAndValidity();
       this.form.get('password')?.updateValueAndValidity();
-      this.form.get('password_confirmation')?.updateValueAndValidity();
-      this.form.get('address')?.updateValueAndValidity();
-      this.form.get('name')?.updateValueAndValidity();
-      this.form.get('surname')?.updateValueAndValidity();
+      this.form.updateValueAndValidity();
     });
   }
 
   passwordMatchValidator(control: AbstractControl): ValidationErrors | null {
     const password = control.get('password');
     const confirmation = control.get('password_confirmation');
+
+    // If confirmation is disabled (as it is in login mode), skip validation
+    if (confirmation?.disabled) {
+      return null;
+    }
+
     if (password && confirmation && password.value !== confirmation.value) {
       return { passwordMismatch: true };
     }
