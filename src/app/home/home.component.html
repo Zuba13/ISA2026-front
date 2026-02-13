@@ -1,4 +1,24 @@
 <div class="main-container">
+    <!-- Watch Party Section -->
+    <div class="watch-party-controls" *ngIf="isAuthenticated">
+        <div class="create-room">
+            <input type="text" [(ngModel)]="newRoomName" placeholder="New Room Name">
+            <button class="create-btn" (click)="createRoom()">Create Room</button>
+        </div>
+        <div class="active-rooms" *ngIf="rooms.length > 0">
+            <h4>Active Watch Parties</h4>
+            <div class="room-list">
+                <div class="room-pill" *ngFor="let room of rooms" (click)="joinRoom(room)"
+                    [class.active]="joinedRoom?.id === room.id">
+                    {{ room.name }} (by {{ room.creator?.username }})
+                </div>
+            </div>
+        </div>
+        <div class="current-session" *ngIf="joinedRoom">
+            <p>Joined Room: <strong>{{ joinedRoom.name }}</strong> | Token: <code>{{ joinedRoom.token }}</code></p>
+        </div>
+    </div>
+
     <div class="video-grid" *ngIf="videos.length > 0; else noVideos">
         <div class="video-card" *ngFor="let video of videos">
             <div class="thumbnail-wrapper">
@@ -24,9 +44,14 @@
                         [class.bi-hand-thumbs-up]="!isLikedByMe(video)"></i>
                     <span>{{ video.likes?.length || 0 }}</span>
                 </button>
-                <button class="action-btn" (click)="toggleComments(video.id)">
+                <button class="action-btn" (click)="toggleComments(video)">
                     <i class="bi bi-chat-text"></i>
                     <span>{{ video.comments_count || 0 }}</span>
+                </button>
+                <button class="action-btn wp-btn" (click)="startVideoInRoom(video)"
+                    *ngIf="joinedRoom && joinedRoom.creator_id === currentUserId">
+                    <i class="bi bi-play-circle-fill"></i>
+                    <span>Sync to Room</span>
                 </button>
             </div>
 
@@ -50,6 +75,10 @@
                                 }} <span>{{ getTimeAgo(comment.created_at) }}</span></p>
                             <p class="comment-text">{{ comment.content }}</p>
                         </div>
+                    </div>
+                    <div class="load-more-container"
+                        *ngIf="commentPagination[video.id] && commentPagination[video.id].current_page < commentPagination[video.id].last_page">
+                        <button class="load-more-btn" (click)="loadMoreComments(video)">Load more comments</button>
                     </div>
                 </div>
             </div>

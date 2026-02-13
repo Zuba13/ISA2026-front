@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { Router } from "@angular/router";
+import { WatchPartyService } from "../shared/watch-party.service";
 
 @Component({
   selector: 'app-home',
@@ -13,8 +14,18 @@ export class HomeComponent implements OnInit {
   currentUserId: any = null;
   newComments: { [key: number]: string } = {};
   visibleComments: { [key: number]: boolean } = {};
+  commentPagination: { [key: number]: { current_page: number, last_page: number } } = {};
 
-  constructor(private http: HttpClient, private router: Router) { }
+  // Watch Party
+  rooms: any[] = [];
+  joinedRoom: any = null;
+  newRoomName: string = '';
+
+  constructor(
+    private http: HttpClient,
+    private router: Router,
+    private wpService: WatchPartyService
+  ) { }
 
   ngOnInit() {
     const token = localStorage.getItem('access_token');
@@ -24,6 +35,47 @@ export class HomeComponent implements OnInit {
       this.currentUserId = JSON.parse(user).id;
     }
     this.fetchVideos(token || '');
+    this.fetchRooms();
+
+    // Listen for watch party synchronization
+    this.wpService.videoStarted$.subscribe((videoId: number) => {
+      alert('A new video has started in your Watch Party!');
+      // Navigate or handle video open logic
+      this.router.navigate(['/video', videoId]);
+    });
+  }
+
+  fetchRooms() {
+    this.wpService.getRooms().subscribe(res => this.rooms = res);
+  }
+
+  createRoom() {
+    if (!this.newRoomName) return;
+    this.wpService.createRoom(this.newRoomName).subscribe((room: any) => {
+      this.joinedRoom = room;
+      this.newRoomName = '';
+      this.fetchRooms();
+      this.wpService.connectToRoom(room.id);
+    });
+  }
+
+  joinRoom(room: any) {
+    this.wpService.joinRoom(room.token).subscribe(() => {
+      this.joinedRoom = room;
+      this.wpService.connectToRoom(room.id);
+      alert(`Joined room: ${room.name}`);
+    });
+  }
+
+  startVideoInRoom(video: any) {
+    if (!this.joinedRoom) {
+      alert('Please join or create a room first');
+      return;
+    }
+    this.wpService.startVideo(this.joinedRoom.id, video.id).subscribe(() => {
+      // For demonstration, since we don't have a real socket server running
+      this.wpService.simulateVideoStart(this.joinedRoom.id, video.id);
+    });
   }
 
   fetchVideos(token: string) {
@@ -92,8 +144,47 @@ export class HomeComponent implements OnInit {
     return video.likes.some((l: any) => l.user_id === this.currentUserId);
   }
 
-  toggleComments(videoId: number) {
-    this.visibleComments[videoId] = !this.visibleComments[videoId];
+  toggleComments(video: any) {
+    this.visibleComments[video.id] = !this.visibleComments[video.id];
+    if (this.visibleComments[video.id]) {
+      this.incrementViews(video);
+      this.loadComments(video, 1);
+    }
+  }
+
+  incrementViews(video: any) {
+    this.http.get(`http://localhost/api/videos/${video.id}`)
+      .subscribe({
+        next: (res: any) => {
+          video.views = res.views;
+        },
+        error: (err) => console.error('Error incrementing views:', err)
+      });
+  }
+
+  loadComments(video: any, page: number) {
+    this.http.get(`http://localhost/api/videos/${video.id}/comments?page=${page}`)
+      .subscribe({
+        next: (res: any) => {
+          if (page === 1) {
+            video.comments = res.data;
+          } else {
+            video.comments = [...video.comments, ...res.data];
+          }
+          this.commentPagination[video.id] = {
+            current_page: res.current_page,
+            last_page: res.last_page
+          };
+        },
+        error: (err) => console.error('Error loading comments:', err)
+      });
+  }
+
+  loadMoreComments(video: any) {
+    const pagination = this.commentPagination[video.id];
+    if (pagination && pagination.current_page < pagination.last_page) {
+      this.loadComments(video, pagination.current_page + 1);
+    }
   }
 
   addComment(video: any) {
