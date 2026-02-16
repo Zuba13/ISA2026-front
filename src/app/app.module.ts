@@ -12,6 +12,9 @@ import { HomeComponent } from './home/home.component';
 import { ManagersComponent } from './managers/managers.component';
 import { ProfileComponent } from './profile/profile.component';
 import { PublicProfileComponent } from './public-profile/public-profile.component';
+import { VideoUploadComponent } from './video-upload/video-upload.component';
+import { VideoDetailComponent } from './video-detail/video-detail.component';
+import { WatchRoomComponent } from './watch-room/watch-room.component';
 
 const appRoutes: Routes = [
   { path: '', component: HomeComponent },
@@ -19,7 +22,10 @@ const appRoutes: Routes = [
   { path: 'login', component: AuthComponent },
   { path: 'register', component: AuthComponent },
   { path: 'profile', component: ProfileComponent },
-  { path: 'user-profile/:id', component: PublicProfileComponent }
+  { path: 'user-profile/:id', component: PublicProfileComponent },
+  { path: 'upload-video', component: VideoUploadComponent },
+  { path: 'video/:id', component: VideoDetailComponent },
+  { path: 'room/:id', component: WatchRoomComponent }
 ];
 @NgModule({
   declarations: [
@@ -30,7 +36,10 @@ const appRoutes: Routes = [
     HomeComponent,
     ManagersComponent,
     ProfileComponent,
-    PublicProfileComponent
+    PublicProfileComponent,
+    VideoUploadComponent,
+    VideoDetailComponent,
+    WatchRoomComponent
   ],
   imports: [
     BrowserModule,

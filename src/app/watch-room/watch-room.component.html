@@ -1,0 +1,85 @@
+<div class="room-container" *ngIf="!loading && room">
+    <!-- Room Header -->
+    <div class="room-header">
+        <div class="room-info">
+            <h2 class="room-name">
+                <i class="bi bi-tv"></i>
+                {{ room.name }}
+            </h2>
+            <p class="room-meta">
+                Created by <strong>{{ room.creator?.username }}</strong>
+                • {{ room.participants_count }} participant(s)
+            </p>
+        </div>
+        <div class="room-actions">
+            <button class="token-btn" (click)="copyToken()">
+                <i class="bi bi-clipboard"></i>
+                Copy Token
+            </button>
+            <button class="leave-btn" (click)="leaveRoom()">
+                <i class="bi bi-box-arrow-right"></i>
+                Leave Room
+            </button>
+        </div>
+    </div>
+
+    <!-- Token Display -->
+    <div class="token-display">
+        <span class="token-label">Room Token:</span>
+        <code class="token-value">{{ room.token }}</code>
+    </div>
+
+    <!-- Current Video -->
+    <div class="current-video-section">
+        <h3>Now Playing</h3>
+        <div *ngIf="room.current_video; else noVideo" class="now-playing-card" (click)="watchCurrentVideo()">
+            <div class="now-playing-thumbnail">
+                <img [src]="room.current_video.thumbnail || 'https://via.placeholder.com/320x180'" alt="Current Video">
+                <div class="play-overlay">
+                    <i class="bi bi-play-circle-fill"></i>
+                </div>
+            </div>
+            <div class="now-playing-info">
+                <h4>{{ room.current_video.title || 'Untitled Video' }}</h4>
+                <p>Click to watch together!</p>
+            </div>
+        </div>
+        <ng-template #noVideo>
+            <div class="no-video-state">
+                <i class="bi bi-film"></i>
+                <p>No video is currently playing.</p>
+                <p *ngIf="isCreator" class="hint">Go to the home page and use the "Sync to Room" button on any video to
+                    start playing!</p>
+            </div>
+        </ng-template>
+    </div>
+
+    <!-- Participants -->
+    <div class="participants-section">
+        <h3>Participants ({{ room.participants_count }})</h3>
+        <div class="participants-list">
+            <div class="participant-item" *ngFor="let p of room.participants">
+                <div class="participant-avatar">
+                    {{ p.user?.username?.charAt(0)?.toUpperCase() || '?' }}
+                </div>
+                <span class="participant-name">
+                    {{ p.user?.username || 'Unknown' }}
+                    <span class="creator-badge" *ngIf="p.user_id === room.creator_id">Host</span>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Loading State -->
+<div class="room-container loading-state" *ngIf="loading">
+    <div class="spinner"></div>
+    <p>Loading room...</p>
+</div>
+
+<!-- Error State -->
+<div class="room-container error-state" *ngIf="!loading && error">
+    <i class="bi bi-exclamation-triangle"></i>
+    <h2>{{ error }}</h2>
+    <button class="back-btn" (click)="goHome()">Back to Home</button>
+</div>

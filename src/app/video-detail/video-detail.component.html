@@ -1,0 +1,90 @@
+<div class="video-detail-container" *ngIf="video; else loadingTemplate">
+    <div class="main-content">
+        <!-- Video Player Section -->
+        <div class="player-wrapper">
+            <video #videoPlayer controls autoplay class="main-player" (play)="onVideoPlay()" (pause)="onVideoPause()"
+                (seeked)="onVideoSeek()">
+                <source [src]="video.video_url" type="video/mp4">
+                Your browser does not support the video tag.
+            </video>
+        </div>
+
+        <div class="video-info">
+            <h1 class="video-title">{{ video.title }}</h1>
+            <div class="video-meta">
+                <div class="stats-likes">
+                    <span class="views">{{ getViewsCount(video.views) }} views • {{ getTimeAgo(video.created_at)
+                        }}</span>
+                    <div class="actions">
+                        <button class="action-btn" (click)="toggleLike()" [class.active]="isLikedByMe()">
+                            <i class="bi" [class.bi-hand-thumbs-up-fill]="isLikedByMe()"
+                                [class.bi-hand-thumbs-up]="!isLikedByMe()"></i>
+                            <span>{{ video.likes?.length || 0 }}</span>
+                        </button>
+                    </div>
+                </div>
+
+                <hr class="divider">
+
+                <div class="author-section">
+                    <div class="author-info" (click)="navigateToProfile(video.user.id)">
+                        <div class="author-avatar">{{ video.user.name.charAt(0) }}</div>
+                        <div class="author-text">
+                            <span class="author-name">{{ video.user.username }}</span>
+                            <span class="sub-count">Author</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="description-box">
+                    <p class="description">{{ video.description }}</p>
+                    <div class="tags" *ngIf="video.tags">
+                        <span class="tag" *ngFor="let tag of video.tags">#{{ tag }}</span>
+                    </div>
+                </div>
+            </div>
+
+            <hr class="divider">
+
+            <!-- Comments Section -->
+            <div class="comments-container">
+                <h3>{{ video.comments_count || 0 }} Comments</h3>
+
+                <div class="comment-input-wrapper" *ngIf="isAuthenticated">
+                    <div class="user-avatar">{{ video.user.name.charAt(0) }}</div>
+                    <div class="input-area">
+                        <input type="text" [(ngModel)]="newComment" placeholder="Add a comment..."
+                            (keyup.enter)="addComment()">
+                        <div class="input-actions" *ngIf="newComment.trim()">
+                            <button class="cancel-btn" (click)="newComment = ''">Cancel</button>
+                            <button class="comment-btn" (click)="addComment()">Comment</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="comments-list">
+                    <div class="comment-item" *ngFor="let comment of video.comments">
+                        <div class="comment-avatar" (click)="navigateToProfile(comment.user.id)">
+                            {{ comment.user.name.charAt(0) }}
+                        </div>
+                        <div class="comment-content">
+                            <div class="comment-header">
+                                <span class="comment-user" (click)="navigateToProfile(comment.user.id)">{{
+                                    comment.user.username }}</span>
+                                <span class="comment-date">{{ getTimeAgo(comment.created_at) }}</span>
+                            </div>
+                            <p class="comment-text">{{ comment.content }}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<ng-template #loadingTemplate>
+    <div class="loading-state">
+        <div class="spinner"></div>
+        <p>Loading video...</p>
+    </div>
+</ng-template>

@@ -16,10 +16,13 @@ export class HomeComponent implements OnInit {
   visibleComments: { [key: number]: boolean } = {};
   commentPagination: { [key: number]: { current_page: number, last_page: number } } = {};
 
+  activeVideo: number | null = null;
+
   // Watch Party
   rooms: any[] = [];
   joinedRoom: any = null;
   newRoomName: string = '';
+  joinTokenInput: string = '';
 
   constructor(
     private http: HttpClient,
@@ -34,13 +37,20 @@ export class HomeComponent implements OnInit {
     if (user) {
       this.currentUserId = JSON.parse(user).id;
     }
+
+    // Restore joined room from localStorage
+    const savedRoom = localStorage.getItem('joined_room');
+    if (savedRoom) {
+      this.joinedRoom = JSON.parse(savedRoom);
+      this.wpService.connectToRoom(this.joinedRoom.id);
+    }
+
     this.fetchVideos(token || '');
     this.fetchRooms();
 
     // Listen for watch party synchronization
     this.wpService.videoStarted$.subscribe((videoId: number) => {
       alert('A new video has started in your Watch Party!');
-      // Navigate or handle video open logic
       this.router.navigate(['/video', videoId]);
     });
   }
@@ -53,18 +63,44 @@ export class HomeComponent implements OnInit {
     if (!this.newRoomName) return;
     this.wpService.createRoom(this.newRoomName).subscribe((room: any) => {
       this.joinedRoom = room;
+      localStorage.setItem('joined_room', JSON.stringify(room));
       this.newRoomName = '';
-      this.fetchRooms();
-      this.wpService.connectToRoom(room.id);
+      this.router.navigate(['/room', room.id]);
     });
   }
 
   joinRoom(room: any) {
-    this.wpService.joinRoom(room.token).subscribe(() => {
-      this.joinedRoom = room;
-      this.wpService.connectToRoom(room.id);
-      alert(`Joined room: ${room.name}`);
+    this.wpService.joinRoom(room.token).subscribe((res: any) => {
+      // The backend returns the room object on join
+      const roomData = res || room;
+      this.joinedRoom = roomData;
+      localStorage.setItem('joined_room', JSON.stringify(roomData));
+      this.router.navigate(['/room', roomData.id]);
     });
+  }
+
+  joinByToken() {
+    if (!this.joinTokenInput || this.joinTokenInput.trim() === '') return;
+    this.wpService.joinRoom(this.joinTokenInput.trim()).subscribe({
+      next: (room: any) => {
+        this.joinedRoom = room;
+        localStorage.setItem('joined_room', JSON.stringify(room));
+        this.joinTokenInput = '';
+        this.router.navigate(['/room', room.id]);
+      },
+      error: (err: any) => {
+        alert('Invalid room token. Please check and try again.');
+        console.error(err);
+      }
+    });
+  }
+
+  leaveCurrentRoom() {
+    if (this.joinedRoom) {
+      this.wpService.leaveRoom(this.joinedRoom.id).subscribe();
+    }
+    this.joinedRoom = null;
+    localStorage.removeItem('joined_room');
   }
 
   startVideoInRoom(video: any) {
@@ -208,6 +244,11 @@ export class HomeComponent implements OnInit {
         },
         error: (err) => console.error(err)
       });
+  }
+
+  navigateToVideo(video: any) {
+    this.incrementViews(video);
+    this.router.navigate(['/video', video.id]);
   }
 
   navigateToProfile(userId: number) {

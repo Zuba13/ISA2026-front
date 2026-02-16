@@ -1,0 +1,38 @@
+<div class="upload-container">
+    <h2>Upload New Video 🎥</h2>
+    <div *ngIf="error" class="alert error">{{ error }}</div>
+
+    <div class="form-group">
+        <label>Title*</label>
+        <input type="text" [(ngModel)]="title" placeholder="Enter video title">
+    </div>
+
+    <div class="form-group">
+        <label>Description*</label>
+        <textarea [(ngModel)]="description" placeholder="Describe your video"></textarea>
+    </div>
+
+    <div class="form-group">
+        <label>Tags (comma separated)</label>
+        <input type="text" [(ngModel)]="tags" placeholder="e.g. music, vlog, tech">
+    </div>
+
+    <div class="form-group">
+        <label>Location (optional)</label>
+        <input type="text" [(ngModel)]="location" placeholder="Where was this filmed?">
+    </div>
+
+    <div class="form-group">
+        <label>Thumbnail* (Image)</label>
+        <input type="file" (change)="onFileChange($event, 'thumbnail')" accept="image/*">
+    </div>
+
+    <div class="form-group">
+        <label>Video* (MP4/MOV, Max 200MB)</label>
+        <input type="file" (change)="onFileChange($event, 'video')" accept="video/mp4,video/quicktime,.mov">
+    </div>
+
+    <button [disabled]="uploading" class="upload-submit" (click)="upload()">
+        {{ uploading ? 'Uploading...' : 'Publish Video' }}
+    </button>
+</div>

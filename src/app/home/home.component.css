@@ -16,19 +16,48 @@
     margin-bottom: 30px;
 }
 
-.create-room {
+.wp-title {
+    color: #fff;
+    font-size: 1.2rem;
+    margin: 0 0 16px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.wp-title i {
+    color: var(--primary-glow);
+}
+
+.wp-actions {
     display: flex;
     gap: 12px;
     margin-bottom: 20px;
+    flex-wrap: wrap;
 }
 
-.create-room input {
+.create-room,
+.join-room {
+    display: flex;
+    gap: 8px;
+    flex: 1;
+    min-width: 200px;
+}
+
+.create-room input,
+.join-room input {
     background: rgba(0, 0, 0, 0.2);
     border: 1px solid rgba(255, 255, 255, 0.1);
     border-radius: 8px;
     padding: 8px 16px;
     color: #fff;
     flex: 1;
+    outline: none;
+}
+
+.create-room input:focus,
+.join-room input:focus {
+    border-color: var(--primary-glow);
 }
 
 .create-btn {
@@ -39,45 +68,158 @@
     color: #000;
     font-weight: 600;
     cursor: pointer;
+    white-space: nowrap;
+    transition: opacity 0.2s;
+}
+
+.create-btn:hover {
+    opacity: 0.85;
+}
+
+.join-btn {
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    padding: 8px 24px;
+    border-radius: 8px;
+    color: #fff;
+    font-weight: 600;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: all 0.2s;
+}
+
+.join-btn:hover {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+.active-rooms h4 {
+    color: var(--text-muted);
+    font-size: 0.9rem;
+    margin: 0 0 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
 }
 
 .room-list {
     display: flex;
     flex-wrap: wrap;
     gap: 10px;
-    margin-top: 10px;
 }
 
 .room-pill {
     background: rgba(255, 255, 255, 0.05);
     border: 1px solid rgba(255, 255, 255, 0.1);
-    padding: 6px 16px;
-    border-radius: 20px;
-    font-size: 0.9rem;
+    padding: 10px 18px;
+    border-radius: 12px;
     cursor: pointer;
     transition: all 0.2s;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
 }
 
-.room-pill:hover,
-.room-pill.active {
+.room-pill:hover {
     background: var(--primary-glow);
-    color: #000;
     border-color: var(--primary-glow);
 }
 
-.current-session {
-    margin-top: 15px;
-    padding-top: 15px;
-    border-top: 1px solid rgba(255, 255, 255, 0.05);
-    font-size: 0.9rem;
-    color: var(--text-muted);
+.room-pill:hover .room-pill-name,
+.room-pill:hover .room-pill-meta {
+    color: #000;
 }
 
-.current-session code {
-    background: rgba(0, 0, 0, 0.3);
-    padding: 2px 6px;
-    border-radius: 4px;
+.room-pill-name {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: #fff;
+}
+
+.room-pill-meta {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+/* Current Session Banner */
+.current-session {
+    margin-top: 16px;
+    padding: 14px 18px;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+
+.session-info {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: #fff;
+    font-size: 0.95rem;
+}
+
+.session-info i {
     color: var(--primary-glow);
+    font-size: 1.1rem;
+}
+
+.session-token {
+    background: rgba(0, 0, 0, 0.3);
+    padding: 3px 10px;
+    border-radius: 6px;
+    color: var(--primary-glow);
+    font-size: 0.85rem;
+    letter-spacing: 0.5px;
+}
+
+.session-actions {
+    display: flex;
+    gap: 8px;
+}
+
+.enter-room-btn {
+    background: var(--primary-glow);
+    color: #000;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 0.85rem;
+    cursor: pointer;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    transition: opacity 0.2s;
+}
+
+.enter-room-btn:hover {
+    opacity: 0.85;
+}
+
+.leave-room-btn {
+    background: rgba(255, 77, 79, 0.15);
+    color: #ff4d4f;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 0.85rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    transition: all 0.2s;
+}
+
+.leave-room-btn:hover {
+    background: rgba(255, 77, 79, 0.3);
 }
 
 .main-container {
@@ -115,6 +257,36 @@
     width: 100%;
     height: 100%;
     object-fit: cover;
+}
+
+.video-player {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    background: #000;
+}
+
+.play-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0, 0, 0, 0.3);
+    opacity: 0;
+    transition: opacity 0.2s;
+}
+
+.thumbnail-wrapper:hover .play-overlay {
+    opacity: 1;
+}
+
+.play-overlay i {
+    font-size: 3rem;
+    color: #fff;
 }
 
 .duration {
