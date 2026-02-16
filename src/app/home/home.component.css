@@ -245,6 +245,18 @@
     background: rgba(255, 0, 0, 0.02);
 }
 
+.video-card::after {
+    content: '';
+    position: absolute;
+    top: -5px;
+    right: -5px;
+    width: 10px;
+    height: 10px;
+    background-color: #ff0000;
+    border-radius: 50%;
+    box-shadow: 0 0 10px #ff0000;
+}
+
 .video-card:hover {
     transform: scale(1.02);
     box-shadow: 0 0 15px rgba(255, 0, 0, 0.2);

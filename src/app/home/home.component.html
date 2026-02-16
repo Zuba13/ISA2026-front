@@ -23,7 +23,6 @@
                 </div>
             </div>
         </div>
-        <!-- Current Session Banner -->
         <div class="current-session" *ngIf="joinedRoom">
             <div class="session-info">
                 <i class="bi bi-tv-fill"></i>
@@ -62,7 +61,6 @@
                 </div>
             </div>
 
-            <!-- Interactions -->
             <div class="interactions">
                 <button class="action-btn" (click)="toggleLike(video)" [class.active]="isLikedByMe(video)">
                     <i class="bi" [class.bi-hand-thumbs-up-fill]="isLikedByMe(video)"
@@ -79,8 +77,6 @@
                     <span>Sync to Room</span>
                 </button>
             </div>
-
-            <!-- Comments Section -->
             <div class="comments-section" *ngIf="visibleComments[video.id]">
                 <div class="comment-input-area">
                     <input type="text" [(ngModel)]="newComments[video.id]" placeholder="Add a comment..."

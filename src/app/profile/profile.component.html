@@ -4,36 +4,76 @@
         <div class="glass-card">
             <div class="card-header">
                 <h2 class="profile-title">My Profile</h2>
-                <p class="profile-subtitle">View your account information</p>
+                <div class="header-actions">
+                    <p class="profile-subtitle">Manage your account information</p>
+                    <button class="btn-edit" (click)="toggleEdit()" *ngIf="!isEditing">
+                        <i class="bi bi-pencil-square"></i> Edit Profile
+                    </button>
+                </div>
             </div>
 
+            <div *ngIf="message" class="alert success">{{ message }}</div>
+            <div *ngIf="error" class="alert error">{{ error }}</div>
+
             <div class="profile-content" *ngIf="currentUser">
-                <div class="info-group">
-                    <label class="info-label">First Name</label>
-                    <div class="info-value">{{ currentUser.name || 'N/A' }}</div>
-                </div>
+                <!-- View Mode -->
+                <ng-container *ngIf="!isEditing">
+                    <div class="info-group">
+                        <label class="info-label">First Name</label>
+                        <div class="info-value">{{ currentUser.name || 'N/A' }}</div>
+                    </div>
 
-                <div class="info-group">
-                    <label class="info-label">Last Name</label>
-                    <div class="info-value">{{ currentUser.surname || 'N/A' }}</div>
-                </div>
+                    <div class="info-group">
+                        <label class="info-label">Last Name</label>
+                        <div class="info-value">{{ currentUser.surname || 'N/A' }}</div>
+                    </div>
 
-                <div class="info-group">
-                    <label class="info-label">Username</label>
-                    <div class="info-value">{{ currentUser.username || 'N/A' }}</div>
-                </div>
+                    <div class="info-group">
+                        <label class="info-label">Username</label>
+                        <div class="info-value">{{ currentUser.username || 'N/A' }}</div>
+                    </div>
 
-                <div class="info-group">
-                    <label class="info-label">Email</label>
-                    <div class="info-value">{{ currentUser.email || 'N/A' }}</div>
-                </div>
+                    <div class="info-group">
+                        <label class="info-label">Email</label>
+                        <div class="info-value">{{ currentUser.email || 'N/A' }}</div>
+                    </div>
 
-                <div class="info-group">
-                    <label class="info-label">Address</label>
-                    <div class="info-value">{{ currentUser.address || 'N/A' }}</div>
-                </div>
+                    <div class="info-group">
+                        <label class="info-label">Address</label>
+                        <div class="info-value">{{ currentUser.address || 'N/A' }}</div>
+                    </div>
+                </ng-container>
 
-                <div class="logout-section">
+                <!-- Edit Mode -->
+                <ng-container *ngIf="isEditing">
+                    <div class="edit-form">
+                        <div class="input-group">
+                            <label>First Name</label>
+                            <input type="text" [(ngModel)]="editForm.name" placeholder="First Name">
+                        </div>
+                        <div class="input-group">
+                            <label>Last Name</label>
+                            <input type="text" [(ngModel)]="editForm.surname" placeholder="Last Name">
+                        </div>
+                        <div class="input-group">
+                            <label>Username</label>
+                            <input type="text" [(ngModel)]="editForm.username" placeholder="Username">
+                        </div>
+                        <div class="input-group">
+                            <label>Address</label>
+                            <input type="text" [(ngModel)]="editForm.address" placeholder="Address">
+                        </div>
+
+                        <div class="edit-actions">
+                            <button class="btn-cancel" (click)="toggleEdit()" [disabled]="isLoading">Cancel</button>
+                            <button class="btn-save" (click)="saveChanges()" [disabled]="isLoading">
+                                {{ isLoading ? 'Saving...' : 'Save Changes' }}
+                            </button>
+                        </div>
+                    </div>
+                </ng-container>
+
+                <div class="logout-section" *ngIf="!isEditing">
                     <button class="btn-logout" (click)="logout()">
                         <i class="bi bi-box-arrow-right"></i>
                         <span>Logout</span>
