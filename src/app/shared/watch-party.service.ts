@@ -57,17 +57,26 @@ export class WatchPartyService {
         }, { headers: this.getHeaders() });
     }
 
-    connectToRoom(roomId: number) {
-        console.log(`Connecting to Watch Party Room ${roomId}...`);
+    private currentRoomId: number | null = null;
+    private listenerAdded = false;
 
-        window.addEventListener('message', (event) => {
-            if (event.data?.type === 'VIDEO_STARTED' && event.data?.roomId === roomId) {
-                this.videoStarted$.next(event.data.videoId);
-            }
-            if (event.data?.type === 'VIDEO_SYNCED' && event.data?.roomId === roomId) {
-                this.videoSynced$.next(event.data);
-            }
-        });
+    connectToRoom(roomId: number) {
+        this.currentRoomId = roomId;
+        console.log(`Switched to Watch Party Room ${roomId}`);
+
+        if (!this.listenerAdded) {
+            window.addEventListener('message', (event) => {
+                if (!this.currentRoomId) return;
+
+                if (event.data?.type === 'VIDEO_STARTED' && event.data?.roomId === this.currentRoomId) {
+                    this.videoStarted$.next(event.data.videoId);
+                }
+                if (event.data?.type === 'VIDEO_SYNCED' && event.data?.roomId === this.currentRoomId) {
+                    this.videoSynced$.next(event.data);
+                }
+            });
+            this.listenerAdded = true;
+        }
     }
 
     simulateVideoStart(roomId: number, videoId: number) {

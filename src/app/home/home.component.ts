@@ -1,14 +1,15 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { Router } from "@angular/router";
 import { WatchPartyService } from "../shared/watch-party.service";
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.css']
 })
-export class HomeComponent implements OnInit {
+export class HomeComponent implements OnInit, OnDestroy {
   videos: any[] = [];
   isAuthenticated = false;
   currentUserId: any = null;
@@ -23,6 +24,8 @@ export class HomeComponent implements OnInit {
   joinedRoom: any = null;
   newRoomName: string = '';
   joinTokenInput: string = '';
+
+  private videoStartedSub: Subscription | null = null;
 
   constructor(
     private http: HttpClient,
@@ -49,10 +52,15 @@ export class HomeComponent implements OnInit {
     this.fetchRooms();
 
     // Listen for watch party synchronization
-    this.wpService.videoStarted$.subscribe((videoId: number) => {
-      alert('A new video has started in your Watch Party!');
+    this.videoStartedSub = this.wpService.videoStarted$.subscribe((videoId: number) => {
       this.router.navigate(['/video', videoId]);
     });
+  }
+
+  ngOnDestroy() {
+    if (this.videoStartedSub) {
+      this.videoStartedSub.unsubscribe();
+    }
   }
 
   fetchRooms() {
@@ -183,7 +191,6 @@ export class HomeComponent implements OnInit {
   toggleComments(video: any) {
     this.visibleComments[video.id] = !this.visibleComments[video.id];
     if (this.visibleComments[video.id]) {
-      this.incrementViews(video);
       this.loadComments(video, 1);
     }
   }
@@ -247,7 +254,6 @@ export class HomeComponent implements OnInit {
   }
 
   navigateToVideo(video: any) {
-    this.incrementViews(video);
     this.router.navigate(['/video', video.id]);
   }
 

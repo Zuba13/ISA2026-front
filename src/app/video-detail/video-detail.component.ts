@@ -10,7 +10,7 @@ import { Subscription } from 'rxjs';
     templateUrl: './video-detail.component.html',
     styleUrls: ['./video-detail.component.css']
 })
-export class VideoDetailComponent implements OnInit {
+export class VideoDetailComponent implements OnInit, OnDestroy {
     video: any = null;
     videoId: number | null = null;
     isAuthenticated = false;

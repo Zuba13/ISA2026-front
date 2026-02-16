@@ -238,10 +238,16 @@
 .video-card {
     cursor: pointer;
     transition: transform 0.2s;
+    border: 1px solid #ff0000;
+    border-radius: 12px;
+    padding: 10px;
+    position: relative;
+    background: rgba(255, 0, 0, 0.02);
 }
 
 .video-card:hover {
     transform: scale(1.02);
+    box-shadow: 0 0 15px rgba(255, 0, 0, 0.2);
 }
 
 .thumbnail-wrapper {
