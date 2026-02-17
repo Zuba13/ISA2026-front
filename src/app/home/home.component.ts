@@ -61,6 +61,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     if (this.videoStartedSub) {
       this.videoStartedSub.unsubscribe();
     }
+    this.wpService.stopPolling();
   }
 
   fetchRooms() {
@@ -109,6 +110,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     }
     this.joinedRoom = null;
     localStorage.removeItem('joined_room');
+    this.wpService.stopPolling();
   }
 
   startVideoInRoom(video: any) {

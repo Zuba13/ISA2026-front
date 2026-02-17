@@ -105,5 +105,6 @@ export class WatchRoomComponent implements OnInit, OnDestroy {
         if (this.videoStartedSub) {
             this.videoStartedSub.unsubscribe();
         }
+        this.wpService.stopPolling();
     }
 }

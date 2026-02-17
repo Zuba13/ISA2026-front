@@ -58,32 +58,48 @@ export class WatchPartyService {
     }
 
     private currentRoomId: number | null = null;
-    private listenerAdded = false;
+    private lastActiveVideoId: number | null = null;
+    private pollingInterval: any = null;
 
     connectToRoom(roomId: number) {
+        if (this.currentRoomId === roomId) return;
+
         this.currentRoomId = roomId;
-        console.log(`Switched to Watch Party Room ${roomId}`);
+        this.stopPolling(); // Clear any existing polling
 
-        if (!this.listenerAdded) {
-            window.addEventListener('message', (event) => {
-                if (!this.currentRoomId) return;
+        console.log(`Watching Party Room ${roomId} via Network-Sync Polling`);
 
-                if (event.data?.type === 'VIDEO_STARTED' && event.data?.roomId === this.currentRoomId) {
-                    this.videoStarted$.next(event.data.videoId);
-                }
-                if (event.data?.type === 'VIDEO_SYNCED' && event.data?.roomId === this.currentRoomId) {
-                    this.videoSynced$.next(event.data);
-                }
+        // Start polling for changes (simulates Socket behavior across computers)
+        this.pollingInterval = setInterval(() => {
+            if (!this.currentRoomId) return;
+
+            this.getRoom(this.currentRoomId).subscribe({
+                next: (room: any) => {
+                    if (room.current_video_id && room.current_video_id !== this.lastActiveVideoId) {
+                        console.log('Network Sync: New video detected from creator', room.current_video_id);
+                        this.lastActiveVideoId = room.current_video_id;
+                        this.videoStarted$.next(room.current_video_id);
+                    }
+                },
+                error: (err) => console.error('Polling error:', err)
             });
-            this.listenerAdded = true;
+        }, 2000); // Poll every 2 seconds
+    }
+
+    stopPolling() {
+        if (this.pollingInterval) {
+            clearInterval(this.pollingInterval);
+            this.pollingInterval = null;
         }
     }
 
     simulateVideoStart(roomId: number, videoId: number) {
-        window.postMessage({ type: 'VIDEO_STARTED', roomId, videoId }, '*');
+        // Immediate local sync for current browser window
+        this.lastActiveVideoId = videoId;
+        this.videoStarted$.next(videoId);
     }
 
     simulateVideoSync(roomId: number, videoId: number, currentTime: number, isPlaying: boolean, userId: number) {
-        window.postMessage({ type: 'VIDEO_SYNCED', roomId, videoId, currentTime, isPlaying, userId }, '*');
+        this.videoSynced$.next({ roomId, videoId, currentTime, isPlaying, userId });
     }
 }
